@@ -1,0 +1,27 @@
+title: 바다의 기록
+description: 일상과 생각을 천천히 기록하는 공간
+url: "https://allsii.github.io"
+baseurl: ""
+github_username: allsii
+lang: ko-KR
+timezone: Asia/Seoul
+
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# 공개 사이트에 작업 메모와 개발용 파일이 포함되지 않도록 합니다.
+exclude:
+  - README.md
+  - THEME-SETUP.md
+  - TODO.md
+  - app.config.ts
+  - dist
+  - _site
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - pnpm-lock.yaml
+  - yarn.lock
+  - vendor
