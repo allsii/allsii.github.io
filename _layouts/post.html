@@ -6,11 +6,12 @@ layout: default
     <p class="eyebrow">POST</p>
     <h1 class="post-title">{{ page.title | escape }}</h1>
     <div class="post-meta">
-      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y.%m.%d" }}</time>
+      <time class="post-local-date" datetime="{{ page.date | date_to_xmlschema }}" data-local-date="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %m월 %d일 %H:%M" }}</time>
       {% for category in page.categories %}
         <a href="{{ '/' | relative_url }}?category={{ category | url_encode | escape }}#stories">{{ category | escape }}</a>
       {% endfor %}
     </div>
+    <p class="post-view-count">기록된 조회수 {{ page.views | default: 0 }}회</p>
     {% if page.description %}
       <p>{{ page.description | escape }}</p>
     {% endif %}
@@ -33,9 +34,18 @@ layout: default
 {% assign comments_repo = site.comments_repo | default: default_comments_repo | strip %}
   <section class="comments" aria-labelledby="comments-heading" data-comments data-comments-repo="{{ comments_repo | escape }}">
     <h2 id="comments-heading">댓글</h2>
-    <p class="comments-disclaimer">댓글은 GitHub Issues에 공개됩니다. 작성하려면 GitHub 계정으로 로그인하고 utterances 앱을 승인해야 합니다.</p>
+    <p class="comments-disclaimer">현재 댓글은 GitHub Issues에 공개됩니다. Utterances 정책상 댓글을 게시하려면 GitHub 계정 로그인이 필요합니다. 로그인 없는 익명 댓글은 별도 서버·스팸 방지 서비스 연결이 필요합니다.</p>
     <p class="comments-status" data-comments-status role="status" aria-live="polite">댓글을 보려면 JavaScript와 utteranc.es 연결을 허용해 주세요.</p>
     <div class="comments-widget" data-comments-widget></div>
+    <form class="anonymous-comment-form" data-anonymous-comment-form novalidate>
+      <h3>익명 댓글 연결 준비</h3>
+      <p>로그인 없는 댓글을 사용하려면 운영자가 외부 댓글 서버를 연결해야 합니다. 아래 특수기호 확인란은 스팸 방지용 입력 UI입니다.</p>
+      <label>이름(선택)<input type="text" name="name" maxlength="80" autocomplete="nickname"></label>
+      <label>댓글<textarea name="comment" rows="4" maxlength="1000" required></textarea></label>
+      <label>스팸 방지 기호 입력 <span aria-hidden="true">◆</span><input type="text" name="symbol" inputmode="text" placeholder="위 기호를 입력하세요" required></label>
+      <button type="submit">댓글 보내기</button>
+      <p class="anonymous-comment-status" data-anonymous-comment-status role="status" aria-live="polite"></p>
+    </form>
     <p class="comments-help">댓글이 보이지 않나요? 네트워크 연결과 브라우저의 콘텐츠 차단 설정을 확인해 주세요.</p>
     <details class="comments-setup">
       <summary>사이트 운영자를 위한 댓글 설정</summary>

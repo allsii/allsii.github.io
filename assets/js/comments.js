@@ -103,3 +103,19 @@
   }
   widget.appendChild(script);
 })();
+
+(() => {
+  const form = document.querySelector('[data-anonymous-comment-form]');
+  if (!form) return;
+  const status = form.querySelector('[data-anonymous-comment-status]');
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const symbol = form.elements.symbol.value.trim();
+    const comment = form.elements.comment.value.trim();
+    if (!comment || symbol !== '◆') {
+      status.textContent = '댓글 내용과 위의 ◆ 기호를 정확히 입력해 주세요.';
+      return;
+    }
+    status.textContent = '입력 확인 완료. 현재 GitHub Pages에는 익명 댓글을 저장할 서버가 연결되지 않아 전송되지 않았습니다. 운영자가 댓글 서버를 연결하면 이 양식을 활성화할 수 있습니다.';
+  });
+})();

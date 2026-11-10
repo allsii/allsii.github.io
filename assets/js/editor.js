@@ -10,7 +10,9 @@
   const titleInput = document.getElementById('editor-title');
   const descriptionInput = document.getElementById('editor-description');
   const dateInput = document.getElementById('editor-date');
-  const categoriesInput = document.getElementById('editor-categories');
+  const timeInput = document.getElementById('editor-time');
+  const categorySelect = document.getElementById('editor-category-select');
+  const newCategoryInput = document.getElementById('editor-new-category');
   const tagsInput = document.getElementById('editor-tags');
   const bodyInput = document.getElementById('editor-body');
   const fileInput = document.getElementById('editor-images');
@@ -34,6 +36,7 @@
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   }
   dateInput.value = todayLocal();
+  timeInput.value = `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`;
 
   function showStatus(message, isError = false) {
     status.replaceChildren();
@@ -221,6 +224,10 @@
     return value.split(',').map(item => item.trim()).filter(Boolean);
   }
 
+  function selectedCategories() {
+    return [...new Set([categorySelect.value.trim(), newCategoryInput.value.trim()].filter(Boolean))];
+  }
+
   // Jekyll evaluates Liquid before Markdown, including within code fences.
   // Preserve the author's literal text and safely split any raw-block terminator.
   function literalMarkdown(body) {
@@ -234,7 +241,7 @@
       '---',
       'layout: post',
       `title: ${yaml(data.title)}`,
-      `date: ${yaml(`${data.date} 00:00:00`)}`,
+      `date: ${yaml(`${data.date} ${data.time}:00 +0900`)}`,
       `description: ${yaml(data.description)}`,
       `excerpt: ${yaml(data.description || data.title)}`,
       `categories: ${yaml(data.categories)}`,
@@ -332,12 +339,14 @@
       if (!token) throw new Error('empty token');
       config = configuration();
       const date = dateInput.value;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(new Date(`${date}T00:00:00`).getTime())) throw new Error('invalid date');
+      const time = timeInput.value;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(new Date(`${date}T00:00:00`).getTime()) || !/^\d{2}:\d{2}$/.test(time)) throw new Error('invalid date');
       const data = {
         title: titleInput.value.trim(),
         description: descriptionInput.value.trim(),
         date,
-        categories: commaList(categoriesInput.value),
+        time,
+        categories: selectedCategories(),
         tags: commaList(tagsInput.value),
         body: bodyInput.value
       };
@@ -402,6 +411,9 @@
       imageStatus.textContent = '';
       form.reset();
       dateInput.value = todayLocal();
+      timeInput.value = `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`;
+      categorySelect.value = '';
+      newCategoryInput.value = '';
       showStatus('게시가 완료되었습니다. GitHub Pages에 반영되기까지 시간이 걸릴 수 있습니다. 미래 날짜의 글은 바로 표시되지 않을 수 있습니다.');
       const link = document.createElement('a');
       link.href = `https://github.com/${encodeSegment(config.owner)}/${encodeSegment(config.repo)}/blob/${newCommitSha}/${pathApi(filePath)}`;
@@ -431,7 +443,7 @@
   });
 
   window.addEventListener('beforeunload', event => {
-    const hasDraft = working || images.length > 0 || [titleInput, descriptionInput, categoriesInput, tagsInput, bodyInput]
+    const hasDraft = working || images.length > 0 || [titleInput, descriptionInput, categorySelect, newCategoryInput, tagsInput, bodyInput]
       .some(input => input.value.trim().length > 0) || dateInput.value !== todayLocal();
     if (!hasDraft) return;
     event.preventDefault();

@@ -25,3 +25,7 @@ exclude:
   - pnpm-lock.yaml
   - yarn.lock
   - vendor
+
+# 실제 방문자 통계는 외부 분석 서비스 연결 후 표시할 수 있습니다.
+analytics_provider: ""
+analytics_site_id: ""

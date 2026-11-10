@@ -75,3 +75,14 @@
   }));
   update();
 })();
+
+(() => {
+  document.querySelectorAll('[data-local-date]').forEach(node => {
+    const date = new Date(node.dataset.localDate);
+    if (Number.isNaN(date.getTime())) return;
+    node.textContent = new Intl.DateTimeFormat('ko-KR', {
+      timeZone: 'Asia/Seoul', year: 'numeric', month: 'long', day: 'numeric',
+      weekday: 'long', hour: '2-digit', minute: '2-digit', hour12: false
+    }).format(date);
+  });
+})();

@@ -35,6 +35,7 @@ publish_branch: main
         <label for="editor-token">GitHub 개인 액세스 토큰 <span aria-hidden="true">*</span></label>
         <input id="editor-token" type="password" required autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="editor-token-help">
         <p id="editor-token-help" class="editor-help">이 페이지는 토큰을 저장하지 않습니다. 토큰을 입력한 뒤 게시 버튼을 눌러주세요.</p>
+        <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub 개인 액세스 토큰 찾기 ↗</a>
       </div>
 
       <div class="editor-field">
@@ -53,15 +54,26 @@ publish_branch: main
           <input id="editor-date" type="date" required>
         </div>
         <div class="editor-field">
-          <label for="editor-categories">카테고리</label>
-          <input id="editor-categories" type="text" maxlength="500" placeholder="예: 일상, 여행" aria-describedby="editor-taxonomy-help">
+          <label for="editor-time">시간 <span aria-hidden="true">*</span></label>
+          <input id="editor-time" type="time" required step="60">
+        </div>
+        <div class="editor-field">
+          <label for="editor-category-select">기존 카테고리</label>
+          <select id="editor-category-select" aria-describedby="editor-taxonomy-help">
+            <option value="">카테고리 선택 안 함</option>
+            {% for category in site.categories %}<option value="{{ category[0] | escape }}">{{ category[0] | escape }} ({{ category[1].size }})</option>{% endfor %}
+          </select>
+        </div>
+        <div class="editor-field">
+          <label for="editor-new-category">새 카테고리 만들기</label>
+          <input id="editor-new-category" type="text" maxlength="80" placeholder="새 카테고리 이름">
         </div>
         <div class="editor-field">
           <label for="editor-tags">태그</label>
           <input id="editor-tags" type="text" maxlength="500" placeholder="예: 바다, 기록" aria-describedby="editor-taxonomy-help">
         </div>
       </div>
-      <p id="editor-taxonomy-help" class="editor-help editor-grid-help">카테고리와 태그는 쉼표로 구분해 주세요. 비워두어도 됩니다.</p>
+      <p id="editor-taxonomy-help" class="editor-help editor-grid-help">기존 카테고리를 선택하거나 새 카테고리 이름을 입력하세요. 둘 다 입력하면 두 카테고리에 저장됩니다. 태그는 쉼표로 구분합니다.</p>
 
       <div class="editor-field">
         <label for="editor-body">본문 <span aria-hidden="true">*</span></label>

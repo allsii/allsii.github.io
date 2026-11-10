@@ -6,6 +6,8 @@ categories: [일상]
 tags: [하루, 쉼, 기록]
 description: 일상의 작은 순간을 담는 예시 글입니다.
 featured: true
+views: 128
+last_commented_at: 2025-06-02 10:20:00 +0900
 ---
 이 글은 테마의 글 상세 화면을 살펴보기 위한 **예시**입니다.
 
