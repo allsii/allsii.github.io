@@ -46,8 +46,9 @@ layout: default
 
       <div class="side-block visitor-stats" aria-label="방문자 통계">
         <div class="side-heading"><span>VISITOR TIDE · 방문자</span><span>✳</span></div>
-        <div class="visitor-grid"><div><strong>—</strong><span>어제</span></div><div><strong>—</strong><span>오늘</span></div><div><strong>—</strong><span>전체</span></div></div>
-        <p class="stats-note">GitHub Pages는 정적 호스팅이라 방문자 집계를 위해 외부 분석 서비스를 연결해야 합니다.</p>
+        <div class="visitor-grid"><div><strong data-visit="yesterday">—</strong><span>어제</span></div><div><strong data-visit="today">—</strong><span>오늘</span></div><div><strong data-visit="total">—</strong><span>전체</span></div></div>
+        <p class="stats-note">방문자 수는 GoatCounter 연결 후 자동으로 표시됩니다. 새 페이지뷰는 서비스 캐시 때문에 늦게 반영될 수 있습니다.</p>
+        <a class="stats-connect-link" href="https://www.goatcounter.com/signup" target="_blank" rel="noopener noreferrer" hidden>방문자 수 연동 요청 · GoatCounter 연결하기 ↗</a>
       </div>
       {% assign popular_posts = site.posts | sort: 'views' | reverse | limit: 3 %}
       <div class="side-block ranked-posts"><div class="side-heading"><span>POPULAR WAVES · 인기 글</span><span>✳</span></div><ol>{% for post in popular_posts %}<li><a href="{{ post.url | relative_url }}"><span>{{ forloop.index | prepend: '0' }}</span>{{ post.title | escape }}</a><small>{{ post.views | default: 0 }} views</small></li>{% endfor %}</ol></div>

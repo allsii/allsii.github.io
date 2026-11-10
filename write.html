@@ -21,8 +21,14 @@ publish_branch: main
   </header>
 
   <div class="editor-notice">
-    <h2>게시 전 꼭 확인하세요</h2>
-    <p>글과 사진은 공개 저장소에 게시됩니다. 게시할 때만 토큰을 GitHub API(<code>api.github.com</code>)로 전송하며 브라우저 저장소에는 보관하지 않습니다.</p>
+    <h2>로그인해서 바로 쓰기</h2>
+    <p>토큰을 입력하지 않으려면 GitHub에 로그인한 뒤 GitHub의 새 파일 편집 화면에서 글을 작성할 수 있습니다.</p>
+    <a class="github-login-write" href="https://github.com/{{ site.github_username | escape }}/{{ site.github_username | escape }}.github.io/new/main/_posts" target="_blank" rel="noopener noreferrer">GitHub 로그인 후 글쓰기 ↗</a>
+  </div>
+
+  <div class="editor-notice">
+    <h2>사이트 안에서 게시하기</h2>
+    <p>사이트 안에서 사진 첨부와 미리보기 기능을 사용하려면 아래의 세분화된 개인 액세스 토큰 방식을 이용합니다. 토큰은 게시할 때만 GitHub API(<code>api.github.com</code>)로 전송하며 브라우저 저장소에는 보관하지 않습니다.</p>
     <p><strong>토큰을 다른 사람에게 공유하지 마세요.</strong> 신뢰할 수 있는 사이트 코드, 의존성 및 브라우저 확장 프로그램에서만 입력하세요. 이 페이지 자체는 로그인으로 보호되지 않습니다.</p>
     <p>GitHub의 <strong>세분화된 개인 액세스 토큰</strong>을 사용하세요. 대상 저장소 하나만 선택하고 <strong>Contents: Read and write</strong> 권한을 부여하면 됩니다. 게시가 끝나거나 실패하면 토큰을 다시 입력해야 합니다.</p>
     <p>페이지를 벗어나면 작성 중인 내용과 사진은 저장되지 않습니다. 종료 경고가 표시되더라도 모바일 브라우저에 따라 경고 없이 종료될 수 있으니 긴 글은 별도로 보관해 주세요.</p>

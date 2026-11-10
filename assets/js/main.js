@@ -86,3 +86,52 @@
     }).format(date);
   });
 })();
+
+
+(() => {
+  const site = (document.body?.dataset.goatcounterSite || '').trim();
+  const stats = document.querySelector('.visitor-stats');
+  if (!stats) return;
+  const values = {
+    yesterday: stats.querySelector('[data-visit="yesterday"]'),
+    today: stats.querySelector('[data-visit="today"]'),
+    total: stats.querySelector('[data-visit="total"]')
+  };
+  const connect = stats.querySelector('.stats-connect-link');
+  if (!site || !/^[A-Za-z0-9-]+$/.test(site)) {
+    if (connect) connect.hidden = false;
+    return;
+  }
+  if (connect) connect.hidden = true;
+  const pad = n => String(n).padStart(2, '0');
+  const localDate = offset => {
+    const now = new Date();
+    now.setDate(now.getDate() + offset);
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  };
+  const endpoint = (start, end) => {
+    const params = new URLSearchParams();
+    if (start) params.set('start', start);
+    if (end) params.set('end', end);
+    return `https://${site}.goatcounter.com/counter/TOTAL.json${params.toString() ? `?${params}` : ''}`;
+  };
+  const read = async (node, start, end) => {
+    if (!node) return;
+    try {
+      const response = await fetch(endpoint(start, end), { mode: 'cors', credentials: 'omit' });
+      if (!response.ok) throw new Error('counter unavailable');
+      const data = await response.json();
+      node.textContent = data.count ?? '—';
+    } catch (_) { node.textContent = '—'; }
+  };
+  const today = localDate(0);
+  const yesterday = localDate(-1);
+  read(values.total);
+  read(values.today, today);
+  read(values.yesterday, yesterday, yesterday);
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://gc.zgo.at/count.js';
+  script.dataset.goatcounter = `https://${site}.goatcounter.com/count`;
+  document.head.appendChild(script);
+})();

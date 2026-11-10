@@ -36,3 +36,5 @@ html[data-theme="dark"] .editor-page{--editor-notice-bg:#17363b;--editor-input-b
 .editor-status.is-error,.editor-error{border-color:#dfb8ad;background:var(--editor-error-bg,#fff4f0);color:var(--editor-error-ink,#853f35)}
 .editor-status a{display:inline-block;margin-top:5px;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:720px){.editor-notice{padding:17px}.editor-grid{grid-template-columns:1fr;gap:0}.editor-grid-help{margin-top:-12px}.editor-image-list{grid-template-columns:1fr}.editor-publish{width:100%}}
+
+.github-login-write{display:inline-flex;margin-top:10px;padding:11px 15px;background:#247487;color:#fff;font-size:12px;font-weight:700;letter-spacing:.1px}.github-login-write:hover,.github-login-write:focus-visible{background:#14596a;color:#fff}
