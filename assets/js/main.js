@@ -49,7 +49,11 @@
       post.hidden = !show;
       if (show) visible += 1;
     });
-    categories.forEach(button => button.classList.toggle('is-active', button.dataset.category === selectedCategory));
+    categories.forEach(button => {
+      const selected = button.dataset.category === selectedCategory;
+      button.classList.toggle('is-active', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
     tags.forEach(button => button.classList.toggle('is-active', button.dataset.tag === selectedTag));
     if (status) status.textContent = (query || selectedCategory || selectedTag) ? `검색된 기록 ${visible}개${selectedTag ? ` · #${selectedTag}` : ''}` : '';
     if (empty) empty.hidden = visible !== 0 || posts.length === 0;
@@ -60,6 +64,7 @@
     selectedTag = '';
     syncFilterUrl();
     update();
+    if (button.classList.contains('side-category')) document.querySelector('#stories')?.scrollIntoView({behavior: 'smooth'});
   }));
   tags.forEach(button => button.addEventListener('click', () => {
     selectedTag = selectedTag === button.dataset.tag ? '' : button.dataset.tag;

@@ -14,3 +14,21 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 /* Keep keyboard focus visible around the otherwise borderless search field. */
 .search-wrap:focus-within{outline:2px solid #328a91;outline-offset:4px;border-radius:2px}
+
+/* Category navigation and the compact mobile header. */
+.header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.side-category-list{display:flex;flex-direction:column;padding-top:8px}
+.side-category.filter-button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border:0;border-bottom:1px solid #e7efec;padding:12px 4px;font-size:12px;color:#6e8c89}
+.side-category.filter-button span:first-child{padding:0;font-size:12px;letter-spacing:0;color:inherit}
+.side-category.filter-button span:last-child{color:#9aafaa;font-size:10px}
+.side-category.filter-button:hover,.side-category.filter-button.is-active{color:#236f7b;border-color:#cde3dd}
+.side-category.filter-button.is-active span:last-child{color:#438f93}
+.side-category.filter-button:focus-visible,.theme-toggle:focus-visible{outline:2px solid #328a91;outline-offset:3px}
+@media(max-width:1100px) and (min-width:721px){.site-nav{gap:19px}.site-nav .nav-github{padding-left:16px}}
+@media(max-width:720px){.header-actions{gap:4px}.sidebar{align-items:start}.about-card{grid-row:auto}.side-category.filter-button{min-height:44px}}
+@media(max-width:720px){.search-wrap input{font-size:16px;width:90px}.search-wrap{padding-bottom:12px}}
+
+/* Long metadata and titles stay inside small screens. */
+.post-meta,.archive-row{flex-wrap:wrap}
+.post-meta a,.archive-title,.archive-row .tag{min-width:0;overflow-wrap:anywhere}
+.archive-title{flex:1 1 12rem}
