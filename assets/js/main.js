@@ -89,49 +89,48 @@
 
 
 (() => {
-  const site = (document.body?.dataset.goatcounterSite || '').trim();
-  const stats = document.querySelector('.visitor-stats');
-  if (!stats) return;
-  const values = {
-    yesterday: stats.querySelector('[data-visit="yesterday"]'),
-    today: stats.querySelector('[data-visit="today"]'),
-    total: stats.querySelector('[data-visit="total"]')
-  };
-  const connect = stats.querySelector('.stats-connect-link');
-  if (!site || !/^[A-Za-z0-9-]+$/.test(site)) {
-    if (connect) connect.hidden = false;
-    return;
+  const list = document.querySelector('.posts-list');
+  const posts = Array.from(document.querySelectorAll('[data-post]'));
+  const sortButtons = Array.from(document.querySelectorAll('[data-sort]'));
+  if (list && posts.length) {
+    const sort = order => {
+      posts.sort((a, b) => {
+        const diff = a.dataset.date.localeCompare(b.dataset.date);
+        return order === 'oldest' ? diff : -diff;
+      }).forEach(post => list.appendChild(post));
+      sortButtons.forEach(button => button.classList.toggle('is-active', button.dataset.sort === order));
+    };
+    sortButtons.forEach(button => button.addEventListener('click', () => sort(button.dataset.sort)));
+    sort('newest');
   }
-  if (connect) connect.hidden = true;
-  const pad = n => String(n).padStart(2, '0');
-  const localDate = offset => {
-    const now = new Date();
-    now.setDate(now.getDate() + offset);
-    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+})();
+
+(() => {
+  const calendar = document.querySelector('[data-calendar]');
+  if (!calendar) return;
+  const grid = calendar.querySelector('[data-calendar-grid]');
+  const title = calendar.querySelector('[data-calendar-title]');
+  const dates = new Set(Array.from(document.querySelectorAll('[data-post]')).map(post => post.dataset.date));
+  let cursor = new Date();
+  cursor.setDate(1);
+  const render = () => {
+    const year = cursor.getFullYear();
+    const month = cursor.getMonth();
+    title.textContent = `${year}년 ${month + 1}월`;
+    grid.replaceChildren();
+    const first = new Date(year, month, 1).getDay();
+    const days = new Date(year, month + 1, 0).getDate();
+    for (let i = 0; i < first; i += 1) grid.appendChild(document.createElement('span'));
+    for (let day = 1; day <= days; day += 1) {
+      const cell = document.createElement('span');
+      const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      cell.textContent = String(day);
+      cell.className = dates.has(key) ? 'has-post' : '';
+      if (dates.has(key)) cell.title = '이 날 포스팅이 있습니다';
+      grid.appendChild(cell);
+    }
   };
-  const endpoint = (start, end) => {
-    const params = new URLSearchParams();
-    if (start) params.set('start', start);
-    if (end) params.set('end', end);
-    return `https://${site}.goatcounter.com/counter/TOTAL.json${params.toString() ? `?${params}` : ''}`;
-  };
-  const read = async (node, start, end) => {
-    if (!node) return;
-    try {
-      const response = await fetch(endpoint(start, end), { mode: 'cors', credentials: 'omit' });
-      if (!response.ok) throw new Error('counter unavailable');
-      const data = await response.json();
-      node.textContent = data.count ?? '—';
-    } catch (_) { node.textContent = '—'; }
-  };
-  const today = localDate(0);
-  const yesterday = localDate(-1);
-  read(values.total);
-  read(values.today, today);
-  read(values.yesterday, yesterday, yesterday);
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://gc.zgo.at/count.js';
-  script.dataset.goatcounter = `https://${site}.goatcounter.com/count`;
-  document.head.appendChild(script);
+  calendar.querySelector('[data-calendar-prev]')?.addEventListener('click', () => { cursor.setMonth(cursor.getMonth() - 1); render(); });
+  calendar.querySelector('[data-calendar-next]')?.addEventListener('click', () => { cursor.setMonth(cursor.getMonth() + 1); render(); });
+  render();
 })();

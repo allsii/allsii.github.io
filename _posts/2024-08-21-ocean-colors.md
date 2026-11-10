@@ -3,8 +3,6 @@ layout: post
 title: "[예시] 바다의 색을 모아서"
 date: 2024-08-21 11:00:00 +0900
 categories: [바다]
-views: 76
-last_commented_at: 2025-05-30 09:10:00 +0900
 tags: [풍경, 파랑, 쉼]
 description: 파란 풍경을 주제로 한 예시 글입니다.
 ---

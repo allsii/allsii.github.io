@@ -3,8 +3,6 @@ layout: post
 title: "[예시] 기록을 시작하는 방법"
 date: 2025-02-03 09:00:00 +0900
 categories: [기록]
-views: 94
-last_commented_at: 2025-05-28 18:40:00 +0900
 tags: [메모, 글쓰기, 하루]
 description: 짧은 메모를 글로 남기는 방법을 소개하는 예시 글입니다.
 ---
